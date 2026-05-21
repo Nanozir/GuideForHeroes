@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Guide for Heroes (Who'd Rather Not Be)</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/ui.css" />
+</head>
+<body>
+  <!-- Title Screen -->
+  <div id="title-screen" class="screen active">
+    <div class="title-bg"></div>
+    <div class="title-content">
+      <h1 class="game-title">A Guide for Heroes</h1>
+      <h2 class="game-subtitle">(Who'd Rather Not Be)</h2>
+      <div class="title-menu">
+        <button class="menu-btn" data-action="new-game">New Game</button>
+        <button class="menu-btn" data-action="continue">Continue</button>
+        <button class="menu-btn" data-action="load">Load</button>
+        <button class="menu-btn" data-action="gallery">Endings</button>
+        <button class="menu-btn" data-action="settings">Settings</button>
+        <button class="menu-btn" data-action="credits">Credits</button>
+      </div>
+      <div class="title-footer">
+        <span class="version">v0.1.0 — Reluctant Edition</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="screen">
+    <!-- Background layer -->
+    <div id="bg-layer" class="bg-layer"></div>
+
+    <!-- Character portraits layer -->
+    <div id="portrait-layer" class="portrait-layer">
+      <div class="portrait-slot" data-slot="left"></div>
+      <div class="portrait-slot" data-slot="center"></div>
+      <div class="portrait-slot" data-slot="right"></div>
+    </div>
+
+    <!-- CG layer (full-screen art) -->
+    <div id="cg-layer" class="cg-layer"></div>
+
+    <!-- Effect layer (flash, fade, shake) -->
+    <div id="effect-layer" class="effect-layer"></div>
+
+    <!-- Dialogue box -->
+    <div id="dialogue-box" class="dialogue-box">
+      <div class="speaker-name" id="speaker-name"></div>
+      <div class="dialogue-text" id="dialogue-text"></div>
+      <div class="dialogue-indicator" id="dialogue-indicator">▼</div>
+    </div>
+
+    <!-- Choice menu -->
+    <div id="choice-menu" class="choice-menu hidden"></div>
+
+    <!-- Top-right control bar -->
+    <div class="control-bar">
+      <button class="ctrl-btn" data-action="auto" title="Auto">A</button>
+      <button class="ctrl-btn" data-action="skip" title="Skip">»</button>
+      <button class="ctrl-btn" data-action="backlog" title="Backlog">≡</button>
+      <button class="ctrl-btn" data-action="save" title="Save">💾</button>
+      <button class="ctrl-btn" data-action="load" title="Load">📂</button>
+      <button class="ctrl-btn" data-action="settings" title="Settings">⚙</button>
+      <button class="ctrl-btn" data-action="title" title="Title">⌂</button>
+    </div>
+
+    <!-- Affinity HUD (hidden by default, toggleable) -->
+    <div id="affinity-hud" class="affinity-hud hidden"></div>
+  </div>
+
+  <!-- Modal: Save/Load -->
+  <div id="save-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="save-modal-title">Save</h2>
+      <div id="save-slots" class="save-slots"></div>
+      <button class="modal-close" data-action="close-modal">Close</button>
+    </div>
+  </div>
+
+  <!-- Modal: Settings -->
+  <div id="settings-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Settings</h2>
+      <div class="settings-group">
+        <label>Text Speed
+          <input type="range" id="text-speed" min="1" max="100" value="40" />
+        </label>
+        <label>Auto Speed
+          <input type="range" id="auto-speed" min="500" max="5000" step="100" value="2000" />
+        </label>
+        <label>BGM Volume
+          <input type="range" id="bgm-volume" min="0" max="100" value="60" />
+        </label>
+        <label>SFX Volume
+          <input type="range" id="sfx-volume" min="0" max="100" value="80" />
+        </label>
+        <label>
+          <input type="checkbox" id="show-affinity" />
+          Show Affinity HUD
+        </label>
+      </div>
+      <button class="modal-close" data-action="close-modal">Close</button>
+    </div>
+  </div>
+
+  <!-- Modal: Backlog -->
+  <div id="backlog-modal" class="modal hidden">
+    <div class="modal-content backlog-content">
+      <h2>Backlog</h2>
+      <div id="backlog-entries" class="backlog-entries"></div>
+      <button class="modal-close" data-action="close-modal">Close</button>
+    </div>
+  </div>
+
+  <!-- Modal: Endings Gallery -->
+  <div id="gallery-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Endings Discovered</h2>
+      <div id="gallery-entries" class="gallery-entries"></div>
+      <button class="modal-close" data-action="close-modal">Close</button>
+    </div>
+  </div>
+
+  <!-- Modal: Credits -->
+  <div id="credits-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Credits</h2>
+      <div class="credits-body">
+        <p><strong>Story &amp; World</strong><br />
+        Original lore from <em>A Guide for Heroes (Who'd Rather Not Be)</em>.</p>
+        <p><strong>Engine &amp; Adaptation</strong><br />Kiro</p>
+        <p><strong>Music (planned)</strong><br />Gemini</p>
+        <p><strong>Quality &amp; Continuity (planned)</strong><br />Claude</p>
+        <p class="small">Characters, settings, and events used with the author's permission for this collaborative adaptation. Images and music are placeholder until provided.</p>
+      </div>
+      <button class="modal-close" data-action="close-modal">Close</button>
+    </div>
+  </div>
+
+  <!-- Modal: Ending screen -->
+  <div id="ending-modal" class="modal hidden">
+    <div class="modal-content ending-content">
+      <h2 id="ending-title">— Ending —</h2>
+      <div id="ending-text" class="ending-text"></div>
+      <div class="ending-actions">
+        <button class="menu-btn" data-action="ending-title">Return to Title</button>
+        <button class="menu-btn" data-action="ending-continue">Continue from Last Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="data/characters.js"></script>
+  <script src="data/locations.js"></script>
+  <script src="data/endings.js"></script>
+  <script src="data/scenes/prologue.js"></script>
+  <script src="data/scenes/ch01_summoning.js"></script>
+  <script src="data/scenes/ch02_mira.js"></script>
+  <script src="data/scenes/ch03_palace.js"></script>
+  <script src="data/scenes/ch04_attack.js"></script>
+  <script src="data/scenes/ch05_sanctum.js"></script>
+  <script src="data/scenes/ch06_seraya.js"></script>
+  <script src="data/scenes/ch07_escape.js"></script>
+  <script src="data/scenes/ch08_recovery.js"></script>
+  <script src="data/scenes/ch09_ball.js"></script>
+  <script src="data/scenes/ch10_departure.js"></script>
+  <script src="data/scenes/branches.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/save.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
