@@ -9,4 +9,4 @@
 
 <p>Avoid overrelying on the Rule of Three, such as "She was furious. Frightened. Undone.", or even worse, "Cold. Cruel. Calculating.". Avoid such "dramatic" sentence structure and write smoothly without relying too much on a certain writing concept.</p>
 
-<p>Do not try and cater to my ego, or sugarcoat things. However, keep in mind that it is a first draft rather than anything professional, and the first time I've ever written something to this degree. Never try and rewrite any of my texts - I want to keep my voice.</p>
+<p>Do your best to keep my tone/voice.</p>
