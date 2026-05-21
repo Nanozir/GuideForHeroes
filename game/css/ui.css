@@ -1,0 +1,291 @@
+/* ============================================
+   UI: control bar, modals, save slots, backlog
+   ============================================ */
+
+/* ===== Control bar ===== */
+.control-bar {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  display: flex;
+  gap: 0.4rem;
+  z-index: 30;
+}
+
+.ctrl-btn {
+  width: 2.4rem;
+  height: 2.4rem;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+.ctrl-btn:hover {
+  background: rgba(70, 45, 100, 0.95);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.ctrl-btn.active {
+  background: rgba(167, 110, 255, 0.3);
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+/* ===== Modals ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 200ms ease;
+}
+.modal.hidden { display: none; }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: linear-gradient(180deg, #1a1224 0%, #100a18 100%);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 880px;
+  width: 100%;
+  max-height: 88vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow);
+}
+
+.modal-content h2 {
+  font-size: 1.6rem;
+  color: var(--gold);
+  margin-bottom: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 0.8rem;
+}
+
+.modal-close {
+  margin-top: 1rem;
+  align-self: flex-end;
+  padding: 0.6rem 1.4rem;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  color: var(--text);
+  border-radius: 4px;
+  transition: var(--transition);
+}
+.modal-close:hover {
+  background: rgba(70, 45, 100, 0.95);
+  border-color: var(--accent);
+}
+
+/* ===== Save / Load slots ===== */
+.save-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.8rem;
+  overflow-y: auto;
+  padding-right: 0.4rem;
+  max-height: 64vh;
+}
+
+.save-slot {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.save-slot:hover {
+  background: rgba(70, 45, 100, 0.85);
+  border-color: var(--accent);
+}
+.save-slot .slot-num {
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+.save-slot .slot-scene {
+  color: var(--text);
+  font-size: 1rem;
+  margin: 0.4rem 0;
+}
+.save-slot .slot-time {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  font-style: italic;
+}
+.save-slot.empty {
+  opacity: 0.55;
+  font-style: italic;
+}
+.save-slot.empty .slot-scene { color: var(--text-dim); }
+
+/* ===== Settings ===== */
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem 0 1rem 0;
+}
+.settings-group label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+}
+.settings-group input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.settings-group input[type="checkbox"] {
+  margin-right: 0.5rem;
+  accent-color: var(--accent);
+  transform: scale(1.2);
+}
+.settings-group label:has(input[type="checkbox"]) {
+  flex-direction: row;
+  align-items: center;
+}
+
+/* ===== Backlog ===== */
+.backlog-content {
+  max-width: 980px;
+}
+.backlog-entries {
+  overflow-y: auto;
+  max-height: 70vh;
+  padding-right: 0.6rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.backlog-entry {
+  padding: 0.6rem 0.4rem;
+  border-bottom: 1px solid rgba(180, 120, 220, 0.12);
+}
+.backlog-entry .speaker {
+  color: var(--gold);
+  font-weight: 600;
+  margin-right: 0.6rem;
+}
+.backlog-entry.thought { color: #b9a4d8; font-style: italic; }
+.backlog-entry.narration { color: var(--text-soft); font-style: italic; }
+.backlog-entry.system { color: var(--gold); font-family: "Courier New", monospace; font-size: 0.9rem; }
+
+/* ===== Gallery ===== */
+.gallery-entries {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.9rem;
+  overflow-y: auto;
+  max-height: 64vh;
+  padding-right: 0.4rem;
+}
+.gallery-entry {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 1rem;
+  min-height: 130px;
+}
+.gallery-entry.locked {
+  opacity: 0.45;
+  font-style: italic;
+}
+.gallery-entry .ending-num {
+  color: var(--gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+.gallery-entry .ending-name {
+  color: var(--text);
+  font-size: 1.1rem;
+  margin: 0.4rem 0;
+}
+.gallery-entry .ending-desc {
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+/* ===== Credits ===== */
+.credits-body {
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--text-soft);
+}
+.credits-body p { margin-bottom: 1rem; }
+.credits-body strong { color: var(--gold); }
+.credits-body .small {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* ===== Ending screen ===== */
+.ending-content {
+  text-align: center;
+  align-items: center;
+}
+.ending-content h2 {
+  border-bottom: none;
+  font-size: 2rem;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.ending-text {
+  font-style: italic;
+  color: var(--text-soft);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 620px;
+  margin-bottom: 2rem;
+}
+.ending-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+::-webkit-scrollbar-thumb {
+  background: rgba(167, 110, 255, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(167, 110, 255, 0.5); }
+
+/* Mobile / small screens */
+@media (max-width: 760px) {
+  .dialogue-box {
+    padding: 1.1rem 1.2rem 1.1rem 1.2rem;
+    min-height: 36%;
+  }
+  .dialogue-text { font-size: 1rem; }
+  .ctrl-btn { width: 2rem; height: 2rem; font-size: 0.85rem; }
+  .portrait-slot { width: 60%; }
+}
