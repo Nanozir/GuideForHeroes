@@ -1,6 +1,7 @@
 /* ============================================
    Chapter 7 — Escape, vault, hallucinations, sniper
    ============================================ */
+window.SCENES = window.SCENES || {};
 
 window.SCENES.ch07_escape_intro = {
   steps: [

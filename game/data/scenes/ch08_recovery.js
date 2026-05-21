@@ -1,6 +1,7 @@
 /* ============================================
    Chapter 8 — Hallucinations and recovery
    ============================================ */
+window.SCENES = window.SCENES || {};
 
 window.SCENES.ch08_hallucinations = {
   steps: [

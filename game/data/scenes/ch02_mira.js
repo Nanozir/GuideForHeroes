@@ -1,6 +1,7 @@
 /* ============================================
    Chapter 2 — Real clothes route (canonical)
    ============================================ */
+window.SCENES = window.SCENES || {};
 
 window.SCENES.ch02_real_clothes = {
   steps: [

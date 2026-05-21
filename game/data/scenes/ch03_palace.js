@@ -1,6 +1,7 @@
 /* ============================================
    Chapter 3 — Gux, Ren, and the palace tour
    ============================================ */
+window.SCENES = window.SCENES || {};
 
 window.SCENES.ch03_gux_ren = {
   steps: [

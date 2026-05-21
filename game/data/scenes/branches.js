@@ -8,6 +8,7 @@
       #7, #8, #9, #10, #11, #12, #13, #14, which trigger
       from optional choice points sprinkled into the game.
 */
+window.SCENES = window.SCENES || {};
 
 // ----- Hub: Sniper-warehouse outcome -----
 // Called by ch07_safehouse_sniper. Decides if Mira reaches

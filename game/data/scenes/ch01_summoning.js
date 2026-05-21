@@ -1,6 +1,7 @@
 /* ============================================
    Chapter 1 — Testing chamber, first Skills
    ============================================ */
+window.SCENES = window.SCENES || {};
 
 window.SCENES.ch01_testing = {
   steps: [

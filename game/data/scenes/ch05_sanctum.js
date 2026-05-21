@@ -1,6 +1,7 @@
 /* ============================================
    Chapter 5 — Sanctum kidnapping (Crimson Sun arc)
    ============================================ */
+window.SCENES = window.SCENES || {};
 
 window.SCENES.ch05_kuger_intro = {
   steps: [

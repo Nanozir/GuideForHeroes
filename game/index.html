@@ -153,6 +153,8 @@
   </div>
 
   <!-- Scripts -->
+  <!-- Initialize the scene registry BEFORE any scene file runs. -->
+  <script>window.SCENES = window.SCENES || {};</script>
   <script src="data/characters.js"></script>
   <script src="data/locations.js"></script>
   <script src="data/endings.js"></script>
