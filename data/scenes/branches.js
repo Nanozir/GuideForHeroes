@@ -73,7 +73,7 @@ window.SCENES.scene_temptation_menu = {
       { text: "(Court the Queen's favor. Titles and estates.)",              target: "ending_pampered",        flags: { pampered: 5 } },
       { text: "(Rei. The criminal. Core theft would solve so much.)",        target: "ending_rei_gambit",      flags: { rei: 5 } },
       { text: "(Lumenari relics. Ancient ruins. A door home.)",              target: "ending_relic_obsession", flags: { relic: 5 } },
-      { text: "(None of those. Stay the course.)",                            target: "ch08_garden" },
+      { text: "(None of those. Stay the course.)",                            target: "ch08_decide_leave" },
     ]},
   ],
 };
