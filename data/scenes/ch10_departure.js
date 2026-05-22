@@ -1,6 +1,7 @@
 /* ============================================
    Chapter 10 — Leaving, the canonical opening
    ============================================ */
+window.SCENES = window.SCENES || {};
 
 window.SCENES.ch10_departure_intro = {
   steps: [

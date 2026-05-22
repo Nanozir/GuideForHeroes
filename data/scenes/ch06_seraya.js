@@ -1,6 +1,7 @@
 /* ============================================
    Chapter 6 — Seraya, Kuger's plan, the choice
    ============================================ */
+window.SCENES = window.SCENES || {};
 
 window.SCENES.ch06_seraya_meet = {
   steps: [

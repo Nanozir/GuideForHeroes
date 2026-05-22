@@ -1,6 +1,7 @@
 /* ============================================
    Chapter 9 — The royal ball, the servant pact
    ============================================ */
+window.SCENES = window.SCENES || {};
 
 window.SCENES.ch09_ball_intro = {
   steps: [

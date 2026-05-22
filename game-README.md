@@ -9,7 +9,7 @@ Open `index.html` in any modern browser. That's it.
 If you want background music or saves to persist across origins, serve it via a tiny local web server:
 
 ```bash
-# from the /game directory
+# from the repo root
 python3 -m http.server 8080
 # then open http://localhost:8080
 ```
@@ -153,7 +153,7 @@ Then add a `<script>` tag for the file in `index.html`. All step types and flags
 ## File layout
 
 ```
-game/
+.
 ├── index.html
 ├── css/
 │   ├── main.css      (layout, screens, dialogue)
@@ -169,9 +169,9 @@ game/
 │   ├── locations.js  (backgrounds)
 │   ├── endings.js    (15 endings registry)
 │   └── scenes/       (one file per chapter + branches.js)
-└── assets/
-    ├── images/       (drop your art here)
-    └── audio/        (drop Gemini's tracks here)
+├── tests/            (static walker + Playwright test)
+├── assets/           (drop art and audio here)
+└── lore/             (source manuscript .docx files)
 ```
 
 ## Credits

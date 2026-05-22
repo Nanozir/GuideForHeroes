@@ -1,6 +1,7 @@
 /* ============================================
    Chapter 4 — Audience with the Queen, courtyard attack
    ============================================ */
+window.SCENES = window.SCENES || {};
 
 window.SCENES.ch04_attack_intro = {
   steps: [

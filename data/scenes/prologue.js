@@ -1,6 +1,7 @@
 /* ============================================
    Prologue — The warp tunnel
    ============================================ */
+window.SCENES = window.SCENES || {};
 
 window.SCENES.prologue_arrival = {
   steps: [
