@@ -5,6 +5,7 @@
    - id: short string used in scenes
    - name: display name
    - color: speaker name color (optional, defaults to gold)
+   - revealExempt: if true, name always shows (no reveal needed)
    - portraits: { expression: "path/to/image.png" }
         If empty/undefined, a placeholder slot will be used.
 
@@ -17,6 +18,7 @@ window.CHARACTERS = {
   erdan: {
     name: "Erdan",
     color: "#e6c068",
+    revealExempt: true,
     description: "The 33rd Hero. Black, slim, glasses, short afro hair. Reluctant. Sarcastic. Cargo pants and a red polo.",
     portraits: {
       // neutral: "assets/images/characters/erdan/neutral.png",
@@ -101,7 +103,7 @@ window.CHARACTERS = {
   tenebrim: {
     name: "Tenebrim Warrior",
     color: "#c08a5a",
-    description: "Brown-skinned tenebrim with crimson tribal markings. Mira's brother — though she doesn't remember him.",
+    description: "Brown-skinned tenebrim with crimson tribal markings. Mira's brother -- though she doesn't remember him.",
     portraits: {},
   },
 
@@ -148,14 +150,14 @@ window.CHARACTERS = {
   },
 
   // Generic / unnamed speakers
-  guard: { name: "Guard", color: "#a0a0b0", portraits: {} },
-  servant: { name: "Servant", color: "#a0a0b0", portraits: {} },
-  noble: { name: "Noble", color: "#c8a878", portraits: {} },
-  crowd: { name: "Voice", color: "#888899", portraits: {} },
-  attendant: { name: "Attendant", color: "#a0a0b0", portraits: {} },
-  knight: { name: "Knight", color: "#b8b8c8", portraits: {} },
-  herald: { name: "Herald", color: "#d8c068", portraits: {} },
-  pope: { name: "Pope Almert", color: "#f0e8d8", portraits: {} },
-  unknown: { name: "???", color: "#666666", portraits: {} },
-  vision: { name: "—", color: "#a888d0", portraits: {} },
+  guard: { name: "Guard", color: "#a0a0b0", revealExempt: true, portraits: {} },
+  servant: { name: "Servant", color: "#a0a0b0", revealExempt: true, portraits: {} },
+  noble: { name: "Noble", color: "#c8a878", revealExempt: true, portraits: {} },
+  crowd: { name: "Voice", color: "#888899", revealExempt: true, portraits: {} },
+  attendant: { name: "Attendant", color: "#a0a0b0", revealExempt: true, portraits: {} },
+  knight: { name: "Knight", color: "#b8b8c8", revealExempt: true, portraits: {} },
+  herald: { name: "Herald", color: "#d8c068", revealExempt: true, portraits: {} },
+  pope: { name: "Pope Almert", color: "#f0e8d8", revealExempt: true, portraits: {} },
+  unknown: { name: "???", color: "#666666", revealExempt: true, portraits: {} },
+  vision: { name: "\u2014", color: "#a888d0", revealExempt: true, portraits: {} },
 };

@@ -107,6 +107,7 @@ window.SCENES.ch02_name_mira = {
     { type: "narration", text: "She repeated the name under her breath, then nodded." },
     { type: "say", char: "mira", text: "Mira… I like it. Thank you, Master." },
 
+    { type: "reveal_name", char: "mira", name: "Mira" },
     { type: "narration", text: "I let out a breath I hadn't realized I was holding and dared a small smile." },
     { type: "say", char: "erdan", text: "Cool. Mira it is, then. Glad you like it." },
     { type: "set", flags: { mira_named: 1, mira_trust: 3 } },
@@ -137,9 +138,18 @@ window.SCENES.ch02_no_name = {
 };
 
 // =====================================================================
-// DINING HALL
+// DINING HALL (ROUTER)
 // =====================================================================
 window.SCENES.ch02_dining = {
+  steps: [
+    { type: "if", flag: "mira_unnamed", op: ">=", value: 1, then: "ch02_dining_unnamed", else: "ch02_dining_named" },
+  ],
+};
+
+// =====================================================================
+// DINING HALL — NAMED PATH (canonical, Mira has a name)
+// =====================================================================
+window.SCENES.ch02_dining_named = {
   steps: [
     { type: "bg", id: "dining_room" },
     { type: "bgm", id: "bgm_dining" },
@@ -195,6 +205,87 @@ window.SCENES.ch02_dining = {
     // --- EATING ---
     { type: "narration", text: "When everything was laid out, I dug in right away. Meats I could not name, stews still bubbling in their bowls, juicy cuts, and soft bread that practically melted. Grilled vegetables in something sweet sat there too, but I skipped most of them." },
     { type: "narration", text: "Mira didn't touch anything at first. She sat with her hands in her lap, eyes flicking over the dishes like she wasn't sure she was allowed to breathe the air around the food." },
+    { type: "narration", text: "I slid a plate of roasted chicken closer to her and gestured with my chin since my mouth was full." },
+    { type: "say", char: "erdan", text: "Mmmh, mmh!" },
+    { type: "narration", text: "She blinked, understood the nonsense, and slowly reached for a piece." },
+
+    { type: "narration", text: "We ate in silence for a while. At one point, I saw her closing her eyes after taking a spoonful of soup, as if it was the first warm thing she'd tasted in weeks." },
+    { type: "thought", text: "I didn't know what to say. I wasn't used to this kind of quiet gratitude, or sadness, or hunger — whatever it was. So I just kept eating, stealing glances at her every now and then and pretending I wasn't." },
+
+    { type: "narration", text: "When I finally finished, I leaned back with a content sigh." },
+    { type: "say", char: "erdan", text: "I am so full! You can eat as much as you want, so do not hold back." },
+    { type: "narration", text: "She gave a small nod and nibbled on a piece of bread." },
+    { type: "thought", text: "Yes, progress! That felt good." },
+
+    // --- GUX ARRIVES ---
+    { type: "narration", text: "I heard the door open behind me but did not bother looking. Probably just a servant doing servant things." },
+    { type: "say", char: "gux", text: "Lord Kernt? Got a moment?" },
+    { type: "thought", text: "Guess not." },
+
+    { type: "goto", target: "ch03_gux_ren" },
+  ],
+};
+
+// =====================================================================
+// DINING HALL — UNNAMED PATH (Mira has no name)
+// =====================================================================
+window.SCENES.ch02_dining_unnamed = {
+  steps: [
+    { type: "bg", id: "dining_room" },
+    { type: "bgm", id: "bgm_dining" },
+    { type: "narration", text: "We reached two giant double doors. The guards stationed outside bowed when they saw us." },
+    { type: "say", char: "guard", text: "Oh, if it is not Lord Kernt! Our chefs have prepared a meal fitting for a hero like you. I hope it is to your liking." },
+    { type: "say", char: "erdan", text: "Thank you very much. I appreciate it." },
+    { type: "narration", text: "I smiled and nodded, then glanced at her and gestured forward." },
+    { type: "say", char: "erdan", text: "You can go in. Ladies first, you know? Haha…" },
+
+    { type: "narration", text: "Both guards exchanged a look. One laughed softly into his hand. She stared at me with blank eyes. I wondered if I had said something weird." },
+    { type: "say", char: "erdan", text: "What?" },
+    { type: "say", char: "guard", text: "I apologize for our rudeness, my lord. We simply thought it was unusual how kindly you treated a mere slave." },
+    { type: "narration", text: "The other guard added with a grin: \"I see she even has proper clothing now. Too bad. I preferred her old outfit.\"" },
+
+    { type: "narration", text: "She lowered her head and took a step back from the entrance." },
+    { type: "thought", text: "I understood then that the previous hero had not been the only one who treated her badly." },
+
+    { type: "say", char: "erdan", text: "Let us go inside at the same time then." },
+    { type: "narration", text: "I hesitated, then placed a light hand on her back to guide her forward. Being this casual with a girl was not like me, but right now the important thing was to make a statement: That I was here for her." },
+    { type: "narration", text: "She flinched at the touch but kept walking. I pulled my hand back the second my tiny burst of boldness ran out." },
+    { type: "set", flags: { mira_trust: 2 } },
+
+    // --- INSIDE THE DINING HALL ---
+    { type: "narration", text: "The dining room was as ridiculously opulent as I had expected, with a table big enough for thirty people and way too much decoration for my taste. Coming from a cramped apartment shared with six family members, the whole thing felt more off-putting than impressive." },
+
+    { type: "show", char: "servant", at: "left", emotion: "neutral" },
+    { type: "say", char: "servant", text: "L-Lord Kernt! You came earlier than we expected. Please, take a seat." },
+    { type: "narration", text: "He pulled out a chair for me. I gave my usual nod and smile." },
+    { type: "say", char: "erdan", text: "Thanks." },
+    { type: "narration", text: "I glanced back at her and pulled out the chair beside mine." },
+    { type: "say", char: "mira", text: "I could not possibly eat with you as an equal, Master. This position is more fitting." },
+    { type: "say", char: "erdan", text: "It is fine. Take a seat. It would feel weird if you just stood behind me while I ate." },
+    { type: "say", char: "mira", text: "If that is what you wish, Master." },
+
+    { type: "narration", text: "Finally, she sat beside me, hands folded in her lap, eyes downcast. The servant hurried back with plates." },
+    { type: "say", char: "erdan", text: "Excuse me, is this all just for us?" },
+    { type: "say", char: "servant", text: "Hm? Yes, this is for you. I am not sure what you meant by us." },
+    { type: "say", char: "erdan", text: "I mean her. She eats with me." },
+    { type: "narration", text: "He looked at her like he had only just noticed her existence, then straightened up again." },
+    { type: "say", char: "servant", text: "This meal was prepared specifically for you, Lord Kernt. You are free to share the remains with the slave if that is what you wish." },
+    { type: "narration", text: "He put extra weight on the word 'slave' and didn't even try to hide it." },
+
+    { type: "say", char: "erdan", text: "I was actually thinking she would eat… with me…" },
+    { type: "thought", text: "My voice became thinner as my confidence waned. I'm an outsider, so I might've been pushing the boundaries." },
+    { type: "narration", text: "His lip tightened for a moment before he forced a smile that never reached his eyes." },
+    { type: "say", char: "servant", text: "You are truly a generous hero, Lord Kernt! I understand. We will serve your companion as well." },
+    { type: "reveal_name", char: "mira", name: "Slave" },
+    { type: "narration", text: "He excused himself and left." },
+    { type: "hide", at: "left" },
+
+    { type: "narration", text: "I let out a small sigh. When I noticed her watching me, I just gave her a small, awkward smile." },
+    { type: "set", flags: { mira_trust: 1 } },
+
+    // --- EATING ---
+    { type: "narration", text: "When everything was laid out, I dug in right away. Meats I could not name, stews still bubbling in their bowls, juicy cuts, and soft bread that practically melted. Grilled vegetables in something sweet sat there too, but I skipped most of them." },
+    { type: "narration", text: "She didn't touch anything at first. She sat with her hands in her lap, eyes flicking over the dishes like she wasn't sure she was allowed to breathe the air around the food." },
     { type: "narration", text: "I slid a plate of roasted chicken closer to her and gestured with my chin since my mouth was full." },
     { type: "say", char: "erdan", text: "Mmmh, mmh!" },
     { type: "narration", text: "She blinked, understood the nonsense, and slowly reached for a piece." },

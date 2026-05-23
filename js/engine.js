@@ -33,6 +33,7 @@ window.Engine = (function () {
     currentScene: null,
     stepIndex: 0,
     flags: {},
+    revealedNames: {},
     portraits: { left: null, center: null, right: null },
     bg: null,
     bgm: null,
@@ -87,6 +88,7 @@ window.Engine = (function () {
   function reset() {
     clearTimers();
     state.flags = {};
+    state.revealedNames = {};
     state.portraits = { left: null, center: null, right: null };
     state.bg = null;
     state.bgm = null;
@@ -158,6 +160,7 @@ window.Engine = (function () {
       case "goto":      return doGoto(step);
       case "choice":    return doChoice(step);
       case "ending":    return doEnding(step);
+      case "reveal_name": return doRevealName(step);
       default:
         console.warn("Unknown step:", step);
         runStep();
@@ -169,6 +172,15 @@ window.Engine = (function () {
   function doSay(step) {
     historyStack.push(snapshot());
     const charDef = window.CHARACTERS[step.char] || { name: step.char, color: "#fff", portraits: {} };
+    // Name reveal system: use revealed name, or "???" for non-exempt characters
+    let displayName;
+    if (state.revealedNames[step.char]) {
+      displayName = state.revealedNames[step.char];
+    } else if (charDef.revealExempt) {
+      displayName = charDef.name;
+    } else {
+      displayName = "???";
+    }
     if (step.at) {
       UI.showPortrait(step.at, step.char, step.emotion);
       // Dim other portraits
@@ -190,8 +202,8 @@ window.Engine = (function () {
         if (step.emotion) UI.showPortrait(foundSlot, step.char, step.emotion);
       }
     }
-    typeText(charDef.name, step.text, "dialogue", { color: charDef.color });
-    state.backlog.push({ kind: "say", speaker: charDef.name, text: step.text, color: charDef.color });
+    typeText(displayName, step.text, "dialogue", { color: charDef.color });
+    state.backlog.push({ kind: "say", speaker: displayName, text: step.text, color: charDef.color });
   }
 
   function doNarration(step) {
@@ -382,6 +394,11 @@ window.Engine = (function () {
     UI.showEnding(ending);
   }
 
+  function doRevealName(step) {
+    state.revealedNames[step.char] = step.name;
+    setTimeout(runStep, 0);
+  }
+
   // ----- Text typing -----
 
   function typeText(speaker, text, kind, opts = {}) {
@@ -480,6 +497,7 @@ window.Engine = (function () {
     const prev = historyStack.pop();
     clearTimers();
     state.flags = { ...(prev.flags || {}) };
+    state.revealedNames = { ...(prev.revealedNames || {}) };
     state.bg = prev.bg;
     UI.setBackground(prev.bg);
     UI.clearCG();
@@ -507,6 +525,7 @@ window.Engine = (function () {
       sceneId: state.currentScene,
       stepIndex: state.stepIndex,
       flags: { ...state.flags },
+      revealedNames: { ...state.revealedNames },
       portraits: JSON.parse(JSON.stringify(state.portraits)),
       bg: state.bg,
       bgm: state.bgm,
@@ -518,6 +537,7 @@ window.Engine = (function () {
   function restore(snap) {
     reset();
     state.flags = { ...(snap.flags || {}) };
+    state.revealedNames = { ...(snap.revealedNames || {}) };
     state.bg = snap.bg;
     if (snap.bg) UI.setBackground(snap.bg);
     if (snap.cg) { UI.showCG(snap.cg); state.cg = snap.cg; }

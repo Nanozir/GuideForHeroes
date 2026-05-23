@@ -132,6 +132,7 @@ window.SCENES.ch09_ball_evening = {
     { type: "say", char: "fiero", text: "Forgive me if I startled you, Lord Erdan. No — Master Erdan!" },
     { type: "narration", text: "Pure white hair, the strands glinting. Citrine eyes, wide smile. He wore a white suit with gold patterns." },
     { type: "say", char: "fiero", text: "My name is Fiero Jerrve Illusif, son of Count Herrek! My name means 'very useful and very handy to have in the hero's party' in an ancient language." },
+    { type: "reveal_name", char: "fiero", name: "Fiero" },
     { type: "narration", text: "It got a small laugh from me before I could stop it." },
     { type: "say", char: "mira", text: "(low) He's clearly planning something. Be careful." },
     { type: "narration", text: "Fiero kept bringing food. He charmed Seraya for a stretch. The evening wore on." },

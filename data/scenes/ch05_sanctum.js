@@ -64,7 +64,9 @@ window.SCENES.ch05_kuger_intro = {
     { type: "say", char: "erdan", text: "What's going on? Are you guys… here to save us?" },
     { type: "say", char: "torren", text: "Ah, I apologize for the fright. We're adventurers, hired by the queen herself. Complicated times, you see." },
     { type: "say", char: "torren", text: "Name's Torren. A pleasure to meet you, hero." },
+    { type: "reveal_name", char: "torren", name: "Torren" },
     { type: "say", char: "guthethya", text: "Guthethya. Less talking, more moving." },
+    { type: "reveal_name", char: "guthethya", name: "Guthethya" },
 
 
     { type: "say", char: "mira", text: "And how do we know we can trust you? The timing of your intervention was… convenient." },
@@ -103,6 +105,7 @@ window.SCENES.ch05_sanctum_tour = {
     { type: "narration", text: "At the end of the hallway, a figure emerged from the dark. A cloaked man. Hood draped over his head, concealing unmistakable purple skin. Dark, piercing eyes. And a mask of metal bars hiding the lower half of his face." },
 
     { type: "show", char: "kuger", at: "center", emotion: "neutral" },
+    { type: "reveal_name", char: "kuger", name: "Kuger" },
     { type: "say", char: "kuger", text: "I will keep it brief. Hand over the hero." },
     { type: "narration", text: "The air around us changed immediately. Guthethya's hand went to her blade." },
     { type: "narration", text: "He slowly extracted his left hand from a pocket, holding up a golden chain bearing an emblem — a red sun with a violet eye in the center." },
