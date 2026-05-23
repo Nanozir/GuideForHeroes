@@ -15,9 +15,11 @@ window.SCENES.ch01_testing = {
     { type: "bgm", id: "bgm_palace" },
     { type: "narration", text: "A circular room with black stone walls stretched before me, with faint blue sigils imprinted into the floor. At its center was a giant construct: a cross between a pillar and an altar, etched with runes that thrummed with a low hum I could feel in my teeth." },
 
+    { type: "reveal_name", char: "mernel", name: "Mernel" },
     { type: "show", char: "mernel", at: "left", emotion: "neutral" },
     { type: "say", char: "mernel", text: "This is the Core Seal. It's an inferior version of the real deal, used for an early assessment of your abilities. The Church has monopoly on the original. We'll measure it fully soon enough." },
 
+    { type: "reveal_name", char: "kina", name: "Kina" },
     { type: "show", char: "kina", at: "right", emotion: "playful" },
     { type: "say", char: "kina", text: "It'll sting a little. But you're a strong boy, aren't you? You won't pass out or anything." },
     { type: "say", char: "erdan", text: "Yeah… thanks for the warning." },

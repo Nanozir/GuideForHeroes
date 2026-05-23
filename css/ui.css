@@ -13,8 +13,10 @@
 }
 
 .ctrl-btn {
-  width: 2.4rem;
+  width: auto;
+  min-width: 2.4rem;
   height: 2.4rem;
+  padding: 0 0.5rem;
   background: var(--panel);
   border: 1px solid var(--panel-border);
   border-radius: 4px;
@@ -141,6 +143,33 @@
   font-style: italic;
 }
 .save-slot.empty .slot-scene { color: var(--text-dim); }
+.save-slot .slot-name {
+  color: var(--text);
+  font-size: 0.9rem;
+  margin: 0.2rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.save-slot .slot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.save-slot .rename-btn {
+  background: none;
+  border: 1px solid var(--panel-border);
+  border-radius: 3px;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  padding: 0.1rem 0.3rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.save-slot .rename-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
 
 /* ===== Settings ===== */
 .settings-group {
@@ -173,6 +202,24 @@
 /* ===== Backlog ===== */
 .backlog-content {
   max-width: 980px;
+}
+.backlog-search {
+  width: 100%;
+  padding: 0.5rem 0.8rem;
+  margin-bottom: 0.8rem;
+  background: rgba(20, 12, 30, 0.9);
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 0.95rem;
+  outline: none;
+  transition: var(--transition);
+}
+.backlog-search::placeholder {
+  color: var(--text-dim);
+}
+.backlog-search:focus {
+  border-color: var(--accent);
 }
 .backlog-entries {
   overflow-y: auto;
@@ -286,6 +333,6 @@
     min-height: 36%;
   }
   .dialogue-text { font-size: 1rem; }
-  .ctrl-btn { width: 2rem; height: 2rem; font-size: 0.85rem; }
+  .ctrl-btn { min-width: 2rem; height: 2rem; font-size: 0.85rem; padding: 0 0.3rem; }
   .portrait-slot { width: 60%; }
 }

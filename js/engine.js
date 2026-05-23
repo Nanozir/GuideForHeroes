@@ -33,6 +33,7 @@ window.Engine = (function () {
     currentScene: null,
     stepIndex: 0,
     flags: {},
+    revealedNames: {},
     portraits: { left: null, center: null, right: null },
     bg: null,
     bgm: null,
@@ -54,6 +55,7 @@ window.Engine = (function () {
   let typeTimer = null;
   let autoTimer = null;
   let advanceLock = false;
+  let historyStack = [];
 
   function init() {
     // Bind the dialogue box click for advance.
@@ -86,6 +88,7 @@ window.Engine = (function () {
   function reset() {
     clearTimers();
     state.flags = {};
+    state.revealedNames = {};
     state.portraits = { left: null, center: null, right: null };
     state.bg = null;
     state.bgm = null;
@@ -95,6 +98,7 @@ window.Engine = (function () {
     state.isWaitingForChoice = false;
     state.auto = false;
     state.skip = false;
+    historyStack = [];
     UI.clearPortraits();
     UI.clearCG();
     UI.setBackground(null);
@@ -156,6 +160,7 @@ window.Engine = (function () {
       case "goto":      return doGoto(step);
       case "choice":    return doChoice(step);
       case "ending":    return doEnding(step);
+      case "reveal_name": return doRevealName(step);
       default:
         console.warn("Unknown step:", step);
         runStep();
@@ -165,7 +170,18 @@ window.Engine = (function () {
   // ----- Step handlers -----
 
   function doSay(step) {
+    historyStack.push(historySnapshot());
+    if (historyStack.length > 100) historyStack.shift();
     const charDef = window.CHARACTERS[step.char] || { name: step.char, color: "#fff", portraits: {} };
+    // Name reveal system: use revealed name, or "???" for non-exempt characters
+    let displayName;
+    if (state.revealedNames[step.char]) {
+      displayName = state.revealedNames[step.char];
+    } else if (charDef.revealExempt) {
+      displayName = charDef.name;
+    } else {
+      displayName = "???";
+    }
     if (step.at) {
       UI.showPortrait(step.at, step.char, step.emotion);
       // Dim other portraits
@@ -187,16 +203,20 @@ window.Engine = (function () {
         if (step.emotion) UI.showPortrait(foundSlot, step.char, step.emotion);
       }
     }
-    typeText(charDef.name, step.text, "dialogue", { color: charDef.color });
-    state.backlog.push({ kind: "say", speaker: charDef.name, text: step.text, color: charDef.color });
+    typeText(displayName, step.text, "dialogue", { color: charDef.color });
+    state.backlog.push({ kind: "say", speaker: displayName, text: step.text, color: charDef.color });
   }
 
   function doNarration(step) {
+    historyStack.push(historySnapshot());
+    if (historyStack.length > 100) historyStack.shift();
     typeText("", step.text, "narration");
     state.backlog.push({ kind: "narration", text: step.text });
   }
 
   function doThought(step) {
+    historyStack.push(historySnapshot());
+    if (historyStack.length > 100) historyStack.shift();
     typeText("", step.text, "thought");
     state.backlog.push({ kind: "thought", text: step.text });
   }
@@ -377,6 +397,11 @@ window.Engine = (function () {
     UI.showEnding(ending);
   }
 
+  function doRevealName(step) {
+    state.revealedNames[step.char] = step.name;
+    setTimeout(runStep, 0);
+  }
+
   // ----- Text typing -----
 
   function typeText(speaker, text, kind, opts = {}) {
@@ -470,21 +495,66 @@ window.Engine = (function () {
     }
   }
 
+  function goBack() {
+    if (historyStack.length === 0) return;
+    const prev = historyStack.pop();
+    clearTimers();
+    state.flags = { ...(prev.flags || {}) };
+    state.revealedNames = { ...(prev.revealedNames || {}) };
+    state.bg = prev.bg;
+    UI.setBackground(prev.bg);
+    UI.clearCG();
+    if (prev.cg) { UI.showCG(prev.cg); state.cg = prev.cg; } else { state.cg = null; }
+    if (prev.bgm) { Audio.playBGM(prev.bgm); state.bgm = prev.bgm; } else { state.bgm = null; }
+    state.portraits = prev.portraits || { left: null, center: null, right: null };
+    UI.clearPortraits();
+    for (const slot in state.portraits) {
+      const p = state.portraits[slot];
+      if (p) UI.showPortrait(slot, p.char, p.emotion);
+    }
+    if (typeof prev.backlogLength === "number") {
+      state.backlog = state.backlog.slice(0, prev.backlogLength);
+    }
+    UI.updateAffinityHUD(state.flags);
+    state.isTyping = false;
+    state.isWaitingForChoice = false;
+    state.currentScene = prev.sceneId;
+    state.stepIndex = Math.max(0, (prev.stepIndex || 1) - 1);
+    runStep();
+  }
+
   function snapshot() {
     return {
       sceneId: state.currentScene,
       stepIndex: state.stepIndex,
       flags: { ...state.flags },
+      revealedNames: { ...state.revealedNames },
       portraits: JSON.parse(JSON.stringify(state.portraits)),
       bg: state.bg,
       bgm: state.bgm,
       cg: state.cg,
+      backlog: JSON.parse(JSON.stringify(state.backlog)),
+    };
+  }
+
+  function historySnapshot() {
+    return {
+      sceneId: state.currentScene,
+      stepIndex: state.stepIndex,
+      flags: { ...state.flags },
+      revealedNames: { ...state.revealedNames },
+      portraits: JSON.parse(JSON.stringify(state.portraits)),
+      bg: state.bg,
+      bgm: state.bgm,
+      cg: state.cg,
+      backlogLength: state.backlog.length,
     };
   }
 
   function restore(snap) {
     reset();
     state.flags = { ...(snap.flags || {}) };
+    state.revealedNames = { ...(snap.revealedNames || {}) };
     state.bg = snap.bg;
     if (snap.bg) UI.setBackground(snap.bg);
     if (snap.cg) { UI.showCG(snap.cg); state.cg = snap.cg; }
@@ -493,6 +563,9 @@ window.Engine = (function () {
     for (const slot in state.portraits) {
       const p = state.portraits[slot];
       if (p) UI.showPortrait(slot, p.char, p.emotion);
+    }
+    if (snap.backlog) {
+      state.backlog = JSON.parse(JSON.stringify(snap.backlog));
     }
     UI.updateAffinityHUD(state.flags);
     state.currentScene = snap.sceneId;
@@ -516,6 +589,7 @@ window.Engine = (function () {
     startScene,
     advance,
     toggleAuto,
+    goBack,
     snapshot,
     restore,
     getState,

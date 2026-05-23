@@ -78,6 +78,7 @@ window.SCENES.prologue_arrival = {
     { type: "show", char: "elisabeth", at: "center", emotion: "neutral" },
     { type: "narration", text: "The old man looked at me, his eyes grey and very steady. Then the red-haired woman looked at me too and spoke first." },
 
+    { type: "reveal_name", char: "elisabeth", name: "Queen Elisabeth" },
     { type: "say", char: "elisabeth", text: "I imagine this is a great deal to take in at once." },
     { type: "say", char: "elisabeth", text: "I am Queen Elisabeth Bernt Ravenshield III. I apologize that your arrival did not allow for a more measured introduction. We will give you a moment, but there are people here who have traveled far, and I will need to ask for your patience shortly." },
 

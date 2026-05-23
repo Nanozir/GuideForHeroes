@@ -27,6 +27,7 @@ window.SCENES.ch06_seraya_meet = {
 
     { type: "show", char: "kuger", at: "left", emotion: "calm" },
     { type: "say", char: "kuger", text: "Hero. This is Seraya. She is blessed beyond measure, touched by Ucliat since her youth, chosen by our Order as High Priestess. It is she who will guide you through what must come." },
+    { type: "reveal_name", char: "seraya", name: "Seraya" },
 
     { type: "narration", text: "She bowed her head slightly, though her gaze never left mine. There was no malice in it, but there was resignation." },
     { type: "say", char: "seraya", text: "…Forgive me. You're… different from the ones before." },

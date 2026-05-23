@@ -20,6 +20,7 @@ window.SCENES.ch03_gux_ren = {
     { type: "narration", text: "He caught my confusion and smirked, bowing low. His smooth green scales caught the light while his thick tail swayed lazily behind him." },
 
     { type: "say", char: "gux", text: "First, let me introduce myself. My name is Guxanjux, Commander of the Draconid Vanguard. I have been assigned as your trainer in close combat. And do not worry, I am more than capable of making a hero like you strong enough to stop Doomsday once and for all!" },
+    { type: "reveal_name", char: "gux", name: "Gux" },
     { type: "narration", text: "Weird. He called himself a commander but wore no armor and carried no sword. Just a brown vest and loose pants. He looked more like a commoner than anything official." },
     { type: "say", char: "erdan", text: "Gu… Guxanjux?" },
     { type: "narration", text: "His face split into a wide grin before he burst out laughing." },
@@ -51,6 +52,7 @@ window.SCENES.ch03_gux_ren = {
 
     { type: "narration", text: "Mira leaned in close and pointed." },
     { type: "say", char: "mira", text: "Master. You have already met Guxanjux, Commander of the Draconid Vanguard. The other is Ren, Second Division Mage. He is an equar, which is why he appears younger and shorter than he is." },
+    { type: "reveal_name", char: "ren", name: "Ren" },
     { type: "say", char: "erdan", text: "Oh, alright…" },
     { type: "thought", text: "So, the little guy was Ren. His appearance was similar to the equar merchant from the alliance gathering. Either way, Ren definitely looked better. Femboy potential, for sure." },
     { type: "thought", text: "Mhm. Definitely keeping a spot open in the potential harem." },
@@ -133,6 +135,7 @@ window.SCENES.ch03_tour = {
 
     { type: "narration", text: "He patted my shoulder firmly, then held his hand out for a handshake." },
     { type: "say", char: "marcel", text: "I should probably introduce myself. I'm Marcel Kirshinov, the head priest here. If you have any questions about your duties or about our lord, don't be afraid to visit." },
+    { type: "reveal_name", char: "marcel", name: "Marcel" },
     { type: "thought", text: "Kirshinov? That almost sounds like a Russian surname…" },
     { type: "say", char: "erdan", text: "Yeah, I'll keep that in mind." },
     { type: "set", flags: { met_marcel: 1 } },
@@ -261,8 +264,29 @@ window.SCENES.ch03_tame_night = {
     { type: "say", char: "erdan", text: "I'm not very good at naming things though." },
     { type: "narration", text: "She suddenly poked my side, making me yelp in surprise." },
     { type: "say", char: "erdan", text: "W-what was that for?" },
-    { type: "say", char: "mira", text: "You gave me a decent name, didn't you? I'm sure you can come up with a good name for him too." },
+    { type: "if", flag: "mira_named", op: ">=", value: 1, then: "ch03_night_name_named", else: "ch03_night_name_unnamed" },
+  ],
+};
 
+// --- Sub-scene: night naming when Mira was named ---
+window.SCENES.ch03_night_name_named = {
+  steps: [
+    { type: "say", char: "mira", text: "You gave me a decent name, didn't you? I'm sure you can come up with a good name for him too." },
+    { type: "goto", target: "ch03_night_name_continue" },
+  ],
+};
+
+// --- Sub-scene: night naming when Mira was NOT named ---
+window.SCENES.ch03_night_name_unnamed = {
+  steps: [
+    { type: "say", char: "mira", text: "You managed with the wolf. You can do it again." },
+    { type: "goto", target: "ch03_night_name_continue" },
+  ],
+};
+
+// --- Sub-scene: night naming continues ---
+window.SCENES.ch03_night_name_continue = {
+  steps: [
     { type: "say", char: "erdan", text: "It has black fur, and it's male. Something like… I don't know actually. What do you think we should name him?" },
     { type: "narration", text: "She brought a hand to her chin, her lips pursed in thought. I don't think I'd ever seen her that serious before." },
     { type: "say", char: "mira", text: "What about… Blackie?" },
@@ -280,6 +304,7 @@ window.SCENES.ch03_tame_night = {
 
     { type: "set", flags: { mira_trust: 2, night_named: 1 } },
     { type: "narration", text: "And just like that, my fluffy companion became Night." },
+    { type: "reveal_name", char: "night", name: "Night" },
     { type: "narration", text: "Basic or not, it kinda suited him." },
     { type: "hide", at: "center" },
 
