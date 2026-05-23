@@ -2,7 +2,7 @@
   "id": "FEAT-001",
   "type": "feat",
   "description": "UI improvements: Replace emoji control bar buttons with text labels, add save file naming, add backlog search, fix backlog persistence, and add message rollback/rewind feature",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "1. In index.html, replace the control bar emoji buttons: change the save button from the floppy emoji to text 'Save', the load button from the folder emoji to text 'Load', the settings button from the gear emoji to text 'Set', and the title/home button from the house emoji to text 'Menu'. Keep A, arrows, and triple-bar as they are since those are already text-like.",
     "2. In css/ui.css, adjust .ctrl-btn styles to accommodate text labels that may be wider than the current 2.4rem square buttons. Change width to auto with min-width and add horizontal padding.",
@@ -28,5 +28,5 @@
     "Verify control bar visually shows text labels instead of emojis"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "All changes implemented successfully. test_walk.py passes (65 scenes, 15 endings all reachable). JS syntax check passes on all modified files. The backlog search uses addEventListener on each showBacklog call - works fine for the modal pattern since innerHTML is reset each time."
 }
