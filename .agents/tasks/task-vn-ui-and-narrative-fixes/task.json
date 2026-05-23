@@ -1,0 +1,7 @@
+{
+  "task_id": "task-vn-ui-and-narrative-fixes",
+  "task_description": "Multiple improvements to the Guide for Heroes visual novel: replace emoji control bar with text labels, allow save file naming, add backlog search and persistence, add message rollback, implement character name reveal system ('???' until narratively revealed), and fix Mira naming branch to properly respect player choices throughout all scenes.",
+  "status": "in_progress",
+  "feature_order": ["FEAT-001", "FEAT-002"],
+  "blocked_reason": null
+}
