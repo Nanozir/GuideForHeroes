@@ -304,6 +304,7 @@ window.SCENES.ch03_night_name_continue = {
 
     { type: "set", flags: { mira_trust: 2, night_named: 1 } },
     { type: "narration", text: "And just like that, my fluffy companion became Night." },
+    { type: "reveal_name", char: "night", name: "Night" },
     { type: "narration", text: "Basic or not, it kinda suited him." },
     { type: "hide", at: "center" },
 

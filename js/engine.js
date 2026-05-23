@@ -170,7 +170,8 @@ window.Engine = (function () {
   // ----- Step handlers -----
 
   function doSay(step) {
-    historyStack.push(snapshot());
+    historyStack.push(historySnapshot());
+    if (historyStack.length > 100) historyStack.shift();
     const charDef = window.CHARACTERS[step.char] || { name: step.char, color: "#fff", portraits: {} };
     // Name reveal system: use revealed name, or "???" for non-exempt characters
     let displayName;
@@ -207,13 +208,15 @@ window.Engine = (function () {
   }
 
   function doNarration(step) {
-    historyStack.push(snapshot());
+    historyStack.push(historySnapshot());
+    if (historyStack.length > 100) historyStack.shift();
     typeText("", step.text, "narration");
     state.backlog.push({ kind: "narration", text: step.text });
   }
 
   function doThought(step) {
-    historyStack.push(snapshot());
+    historyStack.push(historySnapshot());
+    if (historyStack.length > 100) historyStack.shift();
     typeText("", step.text, "thought");
     state.backlog.push({ kind: "thought", text: step.text });
   }
@@ -509,8 +512,8 @@ window.Engine = (function () {
       const p = state.portraits[slot];
       if (p) UI.showPortrait(slot, p.char, p.emotion);
     }
-    if (prev.backlog) {
-      state.backlog = JSON.parse(JSON.stringify(prev.backlog));
+    if (typeof prev.backlogLength === "number") {
+      state.backlog = state.backlog.slice(0, prev.backlogLength);
     }
     UI.updateAffinityHUD(state.flags);
     state.isTyping = false;
@@ -531,6 +534,20 @@ window.Engine = (function () {
       bgm: state.bgm,
       cg: state.cg,
       backlog: JSON.parse(JSON.stringify(state.backlog)),
+    };
+  }
+
+  function historySnapshot() {
+    return {
+      sceneId: state.currentScene,
+      stepIndex: state.stepIndex,
+      flags: { ...state.flags },
+      revealedNames: { ...state.revealedNames },
+      portraits: JSON.parse(JSON.stringify(state.portraits)),
+      bg: state.bg,
+      bgm: state.bgm,
+      cg: state.cg,
+      backlogLength: state.backlog.length,
     };
   }
 

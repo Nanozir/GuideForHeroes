@@ -5,6 +5,7 @@
 window.UI = (function () {
   const elements = {};
   let openModalId = null;
+  let backlogSearchHandler = null;
 
   function init() {
     elements.titleScreen   = document.getElementById("title-screen");
@@ -373,13 +374,17 @@ window.UI = (function () {
       entryElements.push(div);
     });
 
-    searchInput.addEventListener("input", function onSearch() {
+    if (backlogSearchHandler) {
+      searchInput.removeEventListener("input", backlogSearchHandler);
+    }
+    backlogSearchHandler = function onSearch() {
       const query = searchInput.value.toLowerCase();
       entryElements.forEach(el => {
         const content = el.textContent.toLowerCase();
         el.style.display = content.includes(query) ? "" : "none";
       });
-    });
+    };
+    searchInput.addEventListener("input", backlogSearchHandler);
 
     entries.scrollTop = entries.scrollHeight;
     openModal("backlog-modal");
