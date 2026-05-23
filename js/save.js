@@ -21,6 +21,7 @@ window.SaveSystem = (function () {
         const sceneId = parsed.snap && parsed.snap.sceneId;
         out.push({
           label: parsed.label || sceneId || "(unnamed)",
+          name: parsed.name || parsed.label || sceneId || "(unnamed)",
           timestamp: parsed.timestamp || "",
           snap: parsed.snap,
         });
@@ -31,7 +32,7 @@ window.SaveSystem = (function () {
     return out;
   }
 
-  function save(slot) {
+  function save(slot, customName) {
     const snap = Engine.snapshot();
     if (!snap.sceneId) {
       console.warn("Nothing to save.");
@@ -40,6 +41,7 @@ window.SaveSystem = (function () {
     const data = {
       snap,
       label: snap.sceneId,
+      name: customName || snap.sceneId,
       timestamp: new Date().toLocaleString(),
     };
     localStorage.setItem(PREFIX + slot, JSON.stringify(data));
@@ -98,6 +100,20 @@ window.SaveSystem = (function () {
     localStorage.setItem(window.ENDINGS_UNLOCKED_KEY, JSON.stringify(all));
   }
 
+  function renameSave(slot, newName) {
+    const raw = localStorage.getItem(PREFIX + slot);
+    if (!raw) return false;
+    try {
+      const data = JSON.parse(raw);
+      data.name = newName;
+      localStorage.setItem(PREFIX + slot, JSON.stringify(data));
+      return true;
+    } catch (e) {
+      console.error("Failed to rename save:", e);
+      return false;
+    }
+  }
+
   return {
     MAX_SLOTS,
     listSaves,
@@ -106,6 +122,7 @@ window.SaveSystem = (function () {
     load,
     hasSave,
     getQuickSave,
+    renameSave,
     loadSettings,
     saveSettings,
     getUnlockedEndings,

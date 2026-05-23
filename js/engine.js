@@ -54,6 +54,7 @@ window.Engine = (function () {
   let typeTimer = null;
   let autoTimer = null;
   let advanceLock = false;
+  let historyStack = [];
 
   function init() {
     // Bind the dialogue box click for advance.
@@ -95,6 +96,7 @@ window.Engine = (function () {
     state.isWaitingForChoice = false;
     state.auto = false;
     state.skip = false;
+    historyStack = [];
     UI.clearPortraits();
     UI.clearCG();
     UI.setBackground(null);
@@ -165,6 +167,7 @@ window.Engine = (function () {
   // ----- Step handlers -----
 
   function doSay(step) {
+    historyStack.push(snapshot());
     const charDef = window.CHARACTERS[step.char] || { name: step.char, color: "#fff", portraits: {} };
     if (step.at) {
       UI.showPortrait(step.at, step.char, step.emotion);
@@ -192,11 +195,13 @@ window.Engine = (function () {
   }
 
   function doNarration(step) {
+    historyStack.push(snapshot());
     typeText("", step.text, "narration");
     state.backlog.push({ kind: "narration", text: step.text });
   }
 
   function doThought(step) {
+    historyStack.push(snapshot());
     typeText("", step.text, "thought");
     state.backlog.push({ kind: "thought", text: step.text });
   }
@@ -470,6 +475,33 @@ window.Engine = (function () {
     }
   }
 
+  function goBack() {
+    if (historyStack.length === 0) return;
+    const prev = historyStack.pop();
+    clearTimers();
+    state.flags = { ...(prev.flags || {}) };
+    state.bg = prev.bg;
+    UI.setBackground(prev.bg);
+    UI.clearCG();
+    if (prev.cg) { UI.showCG(prev.cg); state.cg = prev.cg; } else { state.cg = null; }
+    if (prev.bgm) { Audio.playBGM(prev.bgm); state.bgm = prev.bgm; } else { state.bgm = null; }
+    state.portraits = prev.portraits || { left: null, center: null, right: null };
+    UI.clearPortraits();
+    for (const slot in state.portraits) {
+      const p = state.portraits[slot];
+      if (p) UI.showPortrait(slot, p.char, p.emotion);
+    }
+    if (prev.backlog) {
+      state.backlog = JSON.parse(JSON.stringify(prev.backlog));
+    }
+    UI.updateAffinityHUD(state.flags);
+    state.isTyping = false;
+    state.isWaitingForChoice = false;
+    state.currentScene = prev.sceneId;
+    state.stepIndex = Math.max(0, (prev.stepIndex || 1) - 1);
+    runStep();
+  }
+
   function snapshot() {
     return {
       sceneId: state.currentScene,
@@ -479,6 +511,7 @@ window.Engine = (function () {
       bg: state.bg,
       bgm: state.bgm,
       cg: state.cg,
+      backlog: JSON.parse(JSON.stringify(state.backlog)),
     };
   }
 
@@ -493,6 +526,9 @@ window.Engine = (function () {
     for (const slot in state.portraits) {
       const p = state.portraits[slot];
       if (p) UI.showPortrait(slot, p.char, p.emotion);
+    }
+    if (snap.backlog) {
+      state.backlog = JSON.parse(JSON.stringify(snap.backlog));
     }
     UI.updateAffinityHUD(state.flags);
     state.currentScene = snap.sceneId;
@@ -516,6 +552,7 @@ window.Engine = (function () {
     startScene,
     advance,
     toggleAuto,
+    goBack,
     snapshot,
     restore,
     getState,

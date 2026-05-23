@@ -41,6 +41,7 @@ window.UI = (function () {
         switch (a) {
           case "auto":     Engine.toggleAuto(); break;
           case "skip":     toggleSkip(); break;
+          case "back":     Engine.goBack(); break;
           case "backlog":  showBacklog(); break;
           case "save":     showSave("save"); break;
           case "load":     showSave("load"); break;
@@ -295,14 +296,41 @@ window.UI = (function () {
       const save = saves[i];
       const slot = document.createElement("div");
       slot.className = "save-slot" + (save ? "" : " empty");
+
+      const displayName = save ? save.name : "— Empty —";
+      const sceneLabel = save ? save.label : "";
+
+      let headerHtml = `<div class="slot-header"><span class="slot-num">Slot ${i + 1}${i === 0 ? " (Quick)" : ""}</span>`;
+      if (save && mode === "save") {
+        headerHtml += `<button class="rename-btn" data-slot="${i}">Rename</button>`;
+      }
+      headerHtml += `</div>`;
+
       slot.innerHTML = `
-        <div class="slot-num">Slot ${i + 1}${i === 0 ? " (Quick)" : ""}</div>
-        <div class="slot-scene">${save ? save.label : "— Empty —"}</div>
+        ${headerHtml}
+        <div class="slot-name">${displayName}</div>
+        <div class="slot-scene">${sceneLabel}</div>
         <div class="slot-time">${save ? save.timestamp : ""}</div>
       `;
+
+      const renameBtn = slot.querySelector(".rename-btn");
+      if (renameBtn) {
+        renameBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const newName = window.prompt("Rename save:", save.name || "");
+          if (newName !== null && newName.trim() !== "") {
+            SaveSystem.renameSave(i, newName.trim());
+            showSave(mode);
+          }
+        });
+      }
+
       slot.addEventListener("click", () => {
         if (mode === "save") {
-          SaveSystem.save(i);
+          const defaultName = Engine.getState().currentScene || "Save";
+          const userName = window.prompt("Name this save:", defaultName);
+          if (userName === null) return;
+          SaveSystem.save(i, userName.trim() || defaultName);
           closeModal();
         } else {
           if (save) {
@@ -321,8 +349,13 @@ window.UI = (function () {
 
   function showBacklog() {
     const entries = document.getElementById("backlog-entries");
+    const searchInput = document.getElementById("backlog-search");
     entries.innerHTML = "";
+    searchInput.value = "";
+
     const log = Engine.getState().backlog || [];
+    const entryElements = [];
+
     log.slice(-200).forEach(entry => {
       const div = document.createElement("div");
       div.className = "backlog-entry " + (entry.kind || "");
@@ -337,7 +370,17 @@ window.UI = (function () {
       text.textContent = entry.text;
       div.appendChild(text);
       entries.appendChild(div);
+      entryElements.push(div);
     });
+
+    searchInput.addEventListener("input", function onSearch() {
+      const query = searchInput.value.toLowerCase();
+      entryElements.forEach(el => {
+        const content = el.textContent.toLowerCase();
+        el.style.display = content.includes(query) ? "" : "none";
+      });
+    });
+
     entries.scrollTop = entries.scrollHeight;
     openModal("backlog-modal");
   }
